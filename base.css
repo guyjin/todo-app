@@ -33,6 +33,10 @@ body {
 	font-smoothing: antialiased;
 }
 
+#main {
+	display: block;
+}
+
 button,
 input[type="checkbox"] {
   outline: none;
@@ -537,6 +541,10 @@ hr {
 	transition-property: left;
 	-webkit-transition-duration: 500ms;
 	transition-duration: 500ms;
+}
+
+.template {
+	display: none;
 }
 
 @media (min-width: 899px) {

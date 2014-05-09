@@ -5,38 +5,20 @@
   <meta charset="utf-8">
   <title>TodoMVC</title>
   <link rel="stylesheet" href="base.css">
+  <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="script.js"></script>
   </head>
-  <body>
+  <body>€
   <section id="todoapp">
     <header id="header">
       <h1>todos</h1>
       <input id="new-todo" placeholder="What needs to be done?" autofocus="">
     </header>
-    <section id="main" style="display: block;">
+    <section id="main">
       <input id="toggle-all" type="checkbox">
       <label for="toggle-all">Mark all as complete</label>
       <ul id="todo-list">
-        <li data-id="1399216626359" class="">
-          <div class="view">
-            <input class="toggle" type="checkbox">
-            <label>Include jQuery on the page</label>
-            <button class="destroy"></button>
-          </div>
-        </li>
-        <li data-id="1399216659638" class="">
-          <div class="view">
-            <input class="toggle" type="checkbox">
-            <label>???</label>
-            <button class="destroy"></button>
-          </div>
-        </li>
-        <li data-id="1399216664438" class="">
-          <div class="view">
-            <input class="toggle" type="checkbox">
-            <label>Profit!</label>
-            <button class="destroy"></button>
-          </div>
-        </li>
+        
       </ul>
     </section>
     <footer id="footer" style="display: block;">
@@ -58,6 +40,14 @@
   <footer id="info">
     <p>Double-click to edit a todo</p>
   </footer>
-
+  <div class="template">
+    <li data-id="" class="">
+          <div class="view">
+            <input class="toggle" type="checkbox">
+            <label></label>
+            <button class="destroy"></button>
+          </div>
+        </li>
+  </div>
   </body>
 </html>
