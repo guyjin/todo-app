@@ -34,7 +34,7 @@
         <a href="#">Completed</a>
         </li>
       </ul>
-      <button id="clear-completed" style="display: none;"></button>
+      <button id="clear-completed">Clear Completed <span id="completedCount"></span></button>
     </footer>
   </section>
   <footer id="info">
@@ -42,12 +42,14 @@
   </footer>
   <div class="template">
     <li data-id="" class="">
-          <div class="view">
-            <input class="toggle" type="checkbox">
-            <label></label>
-            <button class="destroy"></button>
-          </div>
-        </li>
+      <div class="view">
+        <input class="toggle" type="checkbox">
+        <label></label>
+        <button class="destroy"></button>
+      </div>
+      <input type="text" name="todoEditor" id="" class="edit">
+    </li>
+    
   </div>
   </body>
 </html>
