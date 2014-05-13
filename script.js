@@ -23,6 +23,11 @@ $(function() {
 		$('#new-todo').keyup(function(e) {
 			// check which key has been pressed.
 			checkKeyPress(e);
+		});
+
+		$('#toggle-all').on('click', function() {
+			// console.log($(this).is(':checked'));
+			toggleAllComplete();
 		})
 	}
 
@@ -44,12 +49,24 @@ $(function() {
 
 	// build the entire list based on the contents of localStorage
 	function populateList() {
+		var allCompleted = true;
 		todos = JSON.parse(localStorage.getItem('todos'));
 		if(todos.length > 0) {
 			for (var i = 0; i <= todos.length -1 ; i++) {
 				insertEntry(todos[i]['name'],todos[i]['id'],todos[i]['completed']);
+				if(todos[i]['completed'] == false) {
+					allCompleted = false;
+				}
 			};
 		}
+
+		if(allCompleted == true) {
+			$('#toggle-all').prop('checked', true);
+		}
+
+		updateTodosLeft();
+
+
 	} 
 
 	function insertEntry(entry, id,status) {
@@ -105,6 +122,7 @@ $(function() {
 		// localStorage.setItem('Todos', JSON.stringify(todoEntry));
 
 		insertEntry(entry,id);
+		updateTodosLeft();
 	}
 
 	function addListItemListener(id) {
@@ -126,11 +144,13 @@ $(function() {
 				var item = $(event.target).closest('li');
 				if(item.hasClass('completed')){
 					item.removeClass('completed');
-					updateCompleted(id, false)
+					updateCompleted(id, false);
+					$('#toggle-all').prop('checked',false);
 				} else {					
 					item.addClass('completed');
 					updateCompleted(id, true)
 				}
+				updateTodosLeft();
 			}
 		});
 	}
@@ -170,9 +190,56 @@ $(function() {
 
 	// refresh count of todos to be completed.
 
+	function updateTodosLeft() {
+		var left = 0;
+		if(todos.length > 0) {
+			for(i=0; i <  todos.length; i++) {
+				if(todos[i]['completed'] == false){
+					left++;
+				}
+			}
+		}
+
+		$('.todoCount').text(left);
+	}
+
 	// add destroy function
 
 	// add complete all function
+
+	function toggleAllComplete() {
+		if ($('#toggle-all').is(':checked')) {
+			$('#todo-list li').each(function() {
+				var status = true;
+				$(this).addClass('completed').find(':checkbox').prop('checked', true);
+				var id = $(this).attr('data-id');
+				updateCompleted(id, status);
+			})
+		} else {
+			$('#todo-list li').each(function() {
+				var status = false;
+				$(this).removeClass('completed').find(":checkbox").prop('checked',false);
+				var id = $(this).attr('data-id');
+				updateCompleted(id, status);
+			})
+		};
+		//if($('#toggle-all')).is(":checked")) {
+			// $('#todo-list li').each(function() {
+			// 	var status = true;
+			// 	$(this).addClass('completed').find(":checkbox").prop('checked', true);
+			// 	var id = $(this).attr('data-id');
+			// 	updateCompleted(id, status)
+			// })
+		//} else {
+			// $('#todo-list li').each(function() {
+			// 	var status = false;
+			// 	$(this).removeClass('completed').find(":checkbox").prop('checked',false);
+			// 	var id = $(this).attr('data-id');
+			// 	updateCompleted(id, status)
+			// })
+		//}
+		updateTodosLeft();
+	}
 
 	// show footer when todos are in list.
 

@@ -330,6 +330,10 @@ label[for='toggle-all'] {
 	text-align: left;
 }
 
+.todoCount {
+	font-weight: bold;
+}
+
 #filters {
 	margin: 0;
 	padding: 0;
