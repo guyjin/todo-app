@@ -132,10 +132,9 @@ $(function() {
 				// remove the 'editing' class from any other todo items and remove any other editor listeners
 				$('.editing').removeClass('editing');
 				$('.edit').off('keyup');
-				var input = $(event.target);
-				var text = input.text();
-				input.closest('li').addClass('editing');
-				input.closest('li').find('.edit').val(text).focus();
+				var todoText = $(event.target).text();
+				input.closest('li').addClass('editing').find('.edit').val(text).focus();
+				// input.closest('li').find('.edit').val(text).focus();
 				addEditorListener();
 			}
 		});
