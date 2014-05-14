@@ -53,6 +53,7 @@ $(function() {
 		todos = JSON.parse(localStorage.getItem('todos'));
 		if(todos.length > 0) {
 			for (var i = 0; i <= todos.length -1 ; i++) {
+				// insert the Todo into the html list.
 				insertEntry(todos[i]['name'],todos[i]['id'],todos[i]['completed']);
 				if(todos[i]['completed'] == false) {
 					allCompleted = false;
@@ -126,34 +127,43 @@ $(function() {
 	}
 
 	function addListItemListener(id) {
-		$("li[data-id *= '" + id + "']").dblclick(function(event) {			
+		$("li[data-id *= '" + id + "']").on('dblclick','label',function(event) {			
 			// if dblclick was on a label and the parent isn't marked completed.
-			if(event.target.nodeName == "LABEL" && (!$(event.target).closest('li').hasClass('completed'))) {
+			if(!$(event.target).closest('li').hasClass('completed')) {
 				// remove the 'editing' class from any other todo items and remove any other editor listeners
 				$('.editing').removeClass('editing');
-				$('.edit').off('keyup');
+				var thisTodo = $(event.target);
 				var todoText = $(event.target).text();
-				input.closest('li').addClass('editing').find('.edit').val(text).focus();
+				thisTodo.closest('li').addClass('editing').find('.edit').val(todoText).focus();
 				// input.closest('li').find('.edit').val(text).focus();
 				addEditorListener();
 			}
 		});
-		$("li[data-id *= '" + id + "']").click(function(event) {
-			if(event.target.nodeName == 'INPUT') {
-				var item = $(event.target).closest('li');
-				if(item.hasClass('completed')){
-					item.removeClass('completed');
-					updateCompleted(id, false);
-					$('#toggle-all').prop('checked',false);
-				} else {					
-					item.addClass('completed');
-					updateCompleted(id, true)
-				}
-				updateTodosLeft();
+
+		$("li[data-id *= '" + id + "']").on('click','.toggle',function(event) {			
+			var item = $(event.target).closest('li');
+			if(item.hasClass('completed')){
+				item.removeClass('completed');
+				updateCompleted(id, false);
+				$('#toggle-all').prop('checked',false);
+			} else {					
+				item.addClass('completed');
+				updateCompleted(id, true)
 			}
+			updateTodosLeft();
+			
+		});
+
+		$("li[data-id *= '" + id + "']").on('click','.destroy',function(event) {
+			var id = $(event.target).closest('li').attr('data-id');
+			$("li[data-id *= '" + id + "']").off();
+			$(event.target).closest('li').remove();
+
+			destroyTodo(id);
 		});
 	}
 
+	// add a listener to the open editor, listening for the 'return' or 'esc'
 	function addEditorListener() {
 		$('.editing .edit').on('keyup', function(e) {
 			checkEditPress(e);
@@ -182,9 +192,11 @@ $(function() {
 		}	
 	}
 
+	// stop the editing and remove the editor listener
+
 	function abortEditing() {
 		$('.editing').removeClass('editing');
-		$('.edit').val('');
+		$('.edit').val('').off('keyup');
 	}
 
 	// refresh count of todos to be completed.
@@ -204,6 +216,16 @@ $(function() {
 
 	// add destroy function
 
+	function destroyTodo(id) {
+		for(i=0; i <  todos.length; i++) {
+			if(todos[i]['id'] == id){
+				console.log('found id: ' + id);
+				todos.splice(i,1);
+				localStorage.setItem('todos', JSON.stringify(todos));
+			}
+		}
+	}
+
 	// add complete all function
 
 	function toggleAllComplete() {
@@ -222,21 +244,6 @@ $(function() {
 				updateCompleted(id, status);
 			})
 		};
-		//if($('#toggle-all')).is(":checked")) {
-			// $('#todo-list li').each(function() {
-			// 	var status = true;
-			// 	$(this).addClass('completed').find(":checkbox").prop('checked', true);
-			// 	var id = $(this).attr('data-id');
-			// 	updateCompleted(id, status)
-			// })
-		//} else {
-			// $('#todo-list li').each(function() {
-			// 	var status = false;
-			// 	$(this).removeClass('completed').find(":checkbox").prop('checked',false);
-			// 	var id = $(this).attr('data-id');
-			// 	updateCompleted(id, status)
-			// })
-		//}
 		updateTodosLeft();
 	}
 
