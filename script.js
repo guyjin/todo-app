@@ -107,7 +107,7 @@ $(function() {
 			'completed':false
 		}
 
-		var todos = [];
+		todos = [];
 			if (localStorage.getItem('todos') === null) {
 		        todos = [];
 		    } else {
@@ -121,9 +121,9 @@ $(function() {
 	    localStorage.setItem('todos', JSON.stringify(todos));
 
 		// localStorage.setItem('Todos', JSON.stringify(todoEntry));
-
-		insertEntry(entry,id);
 		updateTodosLeft();
+		insertEntry(entry,id);
+		
 	}
 
 	function addListItemListener(id) {
@@ -211,6 +211,12 @@ $(function() {
 			}
 		}
 
+		if(left == 1) {
+			$('#plural').hide();
+		} else {
+			$('#plural').show();
+		}
+
 		$('.todoCount').text(left);
 	}
 
@@ -219,9 +225,9 @@ $(function() {
 	function destroyTodo(id) {
 		for(i=0; i <  todos.length; i++) {
 			if(todos[i]['id'] == id){
-				console.log('found id: ' + id);
 				todos.splice(i,1);
 				localStorage.setItem('todos', JSON.stringify(todos));
+				updateTodosLeft();
 			}
 		}
 	}
