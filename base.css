@@ -298,6 +298,18 @@ label[for='toggle-all'] {
 	margin-bottom: -1px;
 }
 
+body.completed #todo-list li {
+	display: none;
+}
+
+body.completed #todo-list li.completed {
+	display: block;
+}
+
+body.active #todo-list li.completed {
+	display: none;
+}
+
 #footer {
 	color: #777;
 	padding: 0 15px;
@@ -550,6 +562,10 @@ hr {
 
 .template {
 	display: none;
+}
+
+.strong {
+	font-weight: bold;
 }
 
 @media (min-width: 899px) {

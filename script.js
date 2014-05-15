@@ -1,6 +1,7 @@
 $(function() {
 
 	var todos = '';
+	var filter = 'all';
 	function standUp() {
 		// get entries from localstorage if they exist.
 		// populate the list with entries and ids.
@@ -16,7 +17,9 @@ $(function() {
 
 		// setListners after the list has been built.
 		populateList();
+		setFilter();
 		setListeners();
+		$('#filters a#' + filter ).addClass('strong');
 	}
 	function setListeners() {
 		//listen for keypresses
@@ -29,6 +32,17 @@ $(function() {
 			// console.log($(this).is(':checked'));
 			toggleAllComplete();
 		})
+
+		$('#filters a').on('click', function(e) {
+			filter = $(this).attr('id');
+			$('#filters a').removeClass('strong');
+			$(this).addClass('strong');
+			setFilter();
+		})
+	}
+
+	function setFilter() {
+		$('body').removeClass().addClass(filter);		
 	}
 
 	function checkKeyPress(e) {
@@ -49,6 +63,7 @@ $(function() {
 
 	// build the entire list based on the contents of localStorage
 	function populateList() {
+		$('#todo-list')
 		var allCompleted = true;
 		todos = JSON.parse(localStorage.getItem('todos'));
 		if(todos.length > 0) {
